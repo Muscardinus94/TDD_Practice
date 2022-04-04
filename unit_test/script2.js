@@ -7,4 +7,18 @@ const getPeople = async (fetch) => {
     };
 }
 
-module.exports = getPeople;
+const getPeoplePromise = (fetch) => {
+    return fetch('https://swapi.dev/api/people')
+        .then((response) => response.json())
+        .then(({ count, results }) => {
+            return {
+                count,
+                results,
+            };
+        });
+}
+
+module.exports = {
+    getPeople,
+    getPeoplePromise
+};
