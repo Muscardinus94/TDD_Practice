@@ -21,17 +21,21 @@ describe('actions', () => {
       expect(actions.setSearchField(text)).toEqual(expectedAction);
    });
 
-   it('handles requesting robots API', () => {
+   it('handles requesting robots API', async () => {
       // fake Store with thunk middleware
       const mockStore = configureStore([thunk])
       const store = mockStore();
-      store.dispatch(actions.requestRobots());
+      await store.dispatch(actions.requestRobots());
       const action = store.getActions();
-      const expectedAction = {
+      const pendingAction = {
          type: REQUEST_ROBOTS_PENDING,
       };
+      const successAction = {
+         type: REQUEST_ROBOTS_SUCCESS,
+      }
 
-      expect(action[0]).toEqual(expectedAction);
-
+      expect(action[0].type).toEqual(pendingAction.type);
+      expect(action[1].type).toEqual(successAction.type);
+      expect(Array.isArray(action[1].payload)).toEqual(true);
    });
 });
